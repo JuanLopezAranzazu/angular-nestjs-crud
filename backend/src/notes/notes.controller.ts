@@ -5,7 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Request,
   UseGuards,
   Put,
   Delete,
@@ -16,6 +15,7 @@ import { NotesService } from './notes.service';
 import { NoteRequestDto } from './dto/note-request.dto';
 import { NoteResponseDto } from './dto/note-response.dto';
 import { AuthGuard } from 'src/common/guards/auth/auth.guard';
+import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id/get-current-user-id.decorator';
 
 @Controller('notes')
 export class NotesController {
@@ -24,48 +24,50 @@ export class NotesController {
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Get()
-  async getNotes(@Request() req): Promise<NoteResponseDto[]> {
-    return this.notesService.getNotesByUser(req.user.sub);
+  async getNotes(
+    @GetCurrentUserId() userId: number,
+  ): Promise<NoteResponseDto[]> {
+    return this.notesService.getNotesByUser(userId);
   }
 
   @HttpCode(HttpStatus.CREATED)
   @UseGuards(AuthGuard)
   @Post()
   async createNote(
-    @Request() req,
+    @GetCurrentUserId() userId: number,
     @Body() data: NoteRequestDto,
   ): Promise<NoteResponseDto> {
-    return this.notesService.createNote(data, req.user.sub);
+    return this.notesService.createNote(data, userId);
   }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Get(':id')
   async getNoteById(
-    @Request() req,
+    @GetCurrentUserId() userId: number,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<NoteResponseDto> {
-    return this.notesService.getNoteById(id, req.user.sub);
+    return this.notesService.getNoteById(id, userId);
   }
 
   @HttpCode(HttpStatus.OK)
   @UseGuards(AuthGuard)
   @Put(':id')
   async updateNote(
-    @Request() req,
+    @GetCurrentUserId() userId: number,
     @Param('id', ParseIntPipe) id: number,
     @Body() data: NoteRequestDto,
   ): Promise<NoteResponseDto> {
-    return this.notesService.updateNote(id, data, req.user.sub);
+    return this.notesService.updateNote(id, data, userId);
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
   @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteNote(
-    @Request() req,
+    @GetCurrentUserId() userId: number,
     @Param('id', ParseIntPipe) id: number,
   ): Promise<void> {
-    await this.notesService.deleteNote(id, req.user.sub);
+    await this.notesService.deleteNote(id, userId);
   }
 }
