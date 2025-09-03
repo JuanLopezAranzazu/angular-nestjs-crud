@@ -7,6 +7,7 @@ import { PrismaService } from '../prisma/prisma.service';
 import { UserRequestDto } from './dto/user-request.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { User } from '@prisma/client';
+import * as argon from 'argon2';
 
 @Injectable()
 export class UsersService {
@@ -40,7 +41,10 @@ export class UsersService {
 
     // crear un nuevo usuario
     const user = await this.prisma.user.create({
-      data,
+      data: {
+        ...data,
+        password: await argon.hash(data.password),
+      },
     });
     return this.mapUserToResponse(user);
   }
@@ -66,7 +70,10 @@ export class UsersService {
 
     const updatedUser = await this.prisma.user.update({
       where: { id },
-      data,
+      data: {
+        ...data,
+        password: await argon.hash(data.password),
+      },
     });
 
     return this.mapUserToResponse(updatedUser);
@@ -86,15 +93,11 @@ export class UsersService {
     return this.mapUserToResponse(deletedUser);
   }
 
-  async findUserByEmail(email: string): Promise<UserResponseDto | null> {
+  async findUserByEmail(email: string): Promise<User | null> {
     const user = await this.prisma.user.findUnique({
       where: { email },
     });
-    if (!user)
-      throw new NotFoundException(
-        `El usuario con email ${email} no fue encontrado`,
-      );
-    return this.mapUserToResponse(user);
+    return user;
   }
 
   mapUserToResponse(user: User): UserResponseDto {
