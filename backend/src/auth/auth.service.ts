@@ -22,13 +22,12 @@ export class AuthService {
     }
 
     const passwordValid = await argon.verify(user.password, password);
-
     if (!passwordValid) {
       throw new UnauthorizedException('Credenciales inválidas');
     }
+
     // generar el token JWT
     const payload = { email: user.email, sub: user.id };
-
     return {
       accessToken: this.jwtService.sign(payload),
     };

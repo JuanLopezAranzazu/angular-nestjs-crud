@@ -28,7 +28,7 @@ export class UsersController {
   @Get(':id')
   async getUserById(
     @Param('id', ParseIntPipe) id: number,
-  ): Promise<UserResponseDto | null> {
+  ): Promise<UserResponseDto> {
     return this.usersService.getUserById(id);
   }
 
@@ -43,15 +43,13 @@ export class UsersController {
   async updateUser(
     @Param('id', ParseIntPipe) id: number,
     @Body() data: UserRequestDto,
-  ): Promise<UserResponseDto | null> {
+  ): Promise<UserResponseDto> {
     return this.usersService.updateUser(id, data);
   }
 
-  @HttpCode(HttpStatus.OK)
+  @HttpCode(HttpStatus.NO_CONTENT)
   @Delete(':id')
-  async deleteUser(
-    @Param('id', ParseIntPipe) id: number,
-  ): Promise<UserResponseDto | null> {
-    return this.usersService.deleteUser(id);
+  async deleteUser(@Param('id', ParseIntPipe) id: number): Promise<void> {
+    await this.usersService.deleteUser(id);
   }
 }

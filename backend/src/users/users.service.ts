@@ -15,10 +15,10 @@ export class UsersService {
 
   async getUsers(): Promise<UserResponseDto[]> {
     const users = await this.prisma.user.findMany();
-    return users.map((user) => this.mapUserToResponse(user));
+    return users.map((user: User) => this.mapUserToResponse(user));
   }
 
-  async getUserById(id: number): Promise<UserResponseDto | null> {
+  async getUserById(id: number): Promise<UserResponseDto> {
     // verificar si el usuario existe
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -49,10 +49,7 @@ export class UsersService {
     return this.mapUserToResponse(user);
   }
 
-  async updateUser(
-    id: number,
-    data: UserRequestDto,
-  ): Promise<UserResponseDto | null> {
+  async updateUser(id: number, data: UserRequestDto): Promise<UserResponseDto> {
     // verificar si el usuario existe
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -68,6 +65,7 @@ export class UsersService {
       throw new BadRequestException('El email ya está en uso');
     }
 
+    // actualizar el usuario
     const updatedUser = await this.prisma.user.update({
       where: { id },
       data: {
@@ -79,7 +77,7 @@ export class UsersService {
     return this.mapUserToResponse(updatedUser);
   }
 
-  async deleteUser(id: number): Promise<UserResponseDto | null> {
+  async deleteUser(id: number): Promise<void> {
     // verificar si el usuario existe
     const user = await this.prisma.user.findUnique({
       where: { id },
@@ -87,10 +85,10 @@ export class UsersService {
     if (!user)
       throw new NotFoundException(`El usuario con id ${id} no fue encontrado`);
 
-    const deletedUser = await this.prisma.user.delete({
+    // eliminar el usuario
+    await this.prisma.user.delete({
       where: { id },
     });
-    return this.mapUserToResponse(deletedUser);
   }
 
   async findUserByEmail(email: string): Promise<User | null> {
