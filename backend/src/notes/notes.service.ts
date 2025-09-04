@@ -5,6 +5,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { NoteRequestDto } from './dto/note-request.dto';
+import { UpdateNoteDto } from './dto/update-note.dto';
 import { NoteResponseDto } from './dto/note-response.dto';
 import { Note } from '@prisma/client';
 
@@ -53,7 +54,7 @@ export class NotesService {
 
   async updateNote(
     id: number,
-    data: NoteRequestDto,
+    data: UpdateNoteDto,
     userId: number,
   ): Promise<NoteResponseDto> {
     // verificar que la nota existe

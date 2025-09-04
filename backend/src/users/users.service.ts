@@ -6,6 +6,7 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { UserRequestDto } from './dto/user-request.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { User } from '@prisma/client';
 import * as argon from 'argon2';
@@ -53,7 +54,7 @@ export class UsersService {
 
   async updateUser(
     id: number,
-    data: UserRequestDto,
+    data: UpdateUserDto,
     currentUserId: number,
   ): Promise<UserResponseDto> {
     // verificar si el usuario existe
@@ -71,20 +72,28 @@ export class UsersService {
     }
 
     // validar si el email ya está en uso
-    const existingUser = await this.prisma.user.findUnique({
-      where: { email: data.email },
-    });
-    if (existingUser && existingUser.id !== id) {
-      throw new BadRequestException('El email ya está en uso');
+    if (data.email) {
+      const existingUser = await this.prisma.user.findUnique({
+        where: { email: data.email },
+      });
+      if (existingUser && existingUser.id !== id) {
+        throw new BadRequestException('El email ya está en uso');
+      }
+    }
+
+    // preparar datos
+    const updatedData = {
+      ...data,
+    };
+
+    if (data.password) {
+      updatedData.password = await argon.hash(data.password);
     }
 
     // actualizar el usuario
     const updatedUser = await this.prisma.user.update({
       where: { id },
-      data: {
-        ...data,
-        password: await argon.hash(data.password),
-      },
+      data: updatedData,
     });
 
     return this.mapUserToResponse(updatedUser);

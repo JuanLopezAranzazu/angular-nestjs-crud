@@ -12,6 +12,7 @@ import {
 } from '@nestjs/common';
 import { NotesService } from './notes.service';
 import { NoteRequestDto } from './dto/note-request.dto';
+import { UpdateNoteDto } from './dto/update-note.dto';
 import { NoteResponseDto } from './dto/note-response.dto';
 import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id/get-current-user-id.decorator';
 
@@ -50,7 +51,7 @@ export class NotesController {
   async updateNote(
     @GetCurrentUserId() userId: number,
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: NoteRequestDto,
+    @Body() data: UpdateNoteDto,
   ): Promise<NoteResponseDto> {
     return this.notesService.updateNote(id, data, userId);
   }

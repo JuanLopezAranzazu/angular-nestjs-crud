@@ -13,6 +13,7 @@ import {
 } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UserRequestDto } from './dto/user-request.dto';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { UserResponseDto } from './dto/user-response.dto';
 import { RolesGuard } from '../common/guards/roles/roles.guard';
 import { Roles } from '../common/decorators/roles/roles.decorator';
@@ -53,7 +54,7 @@ export class UsersController {
   async updateUser(
     @GetCurrentUserId() userId: number,
     @Param('id', ParseIntPipe) id: number,
-    @Body() data: UserRequestDto,
+    @Body() data: UpdateUserDto,
   ): Promise<UserResponseDto> {
     return this.usersService.updateUser(id, data, userId);
   }
