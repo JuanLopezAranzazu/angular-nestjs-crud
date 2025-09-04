@@ -6,18 +6,24 @@ import {
   HttpStatus,
   Post,
   Request,
-  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthRequestDto } from './dto/auth-request.dto';
 import { AuthResponseDto } from './dto/auth-response.dto';
-import { AuthGuard } from 'src/common/guards/auth/auth.guard';
+import { UsersService } from 'src/users/users.service';
+import { UserRequestDto } from 'src/users/dto/user-request.dto';
+import { UserResponseDto } from 'src/users/dto/user-response.dto';
+import { Public } from '../common/decorators/public/public.decorator';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(
+    private authService: AuthService,
+    private usersService: UsersService,
+  ) {}
 
   @HttpCode(HttpStatus.OK)
+  @Public()
   @Post('login')
   async login(
     @Body() authRequestDto: AuthRequestDto,
@@ -25,7 +31,14 @@ export class AuthController {
     return this.authService.login(authRequestDto);
   }
 
-  @UseGuards(AuthGuard)
+  @HttpCode(HttpStatus.CREATED)
+  @Public()
+  @Post('register')
+  async register(@Body() data: UserRequestDto): Promise<UserResponseDto> {
+    return this.usersService.createUser(data);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Get('profile')
   getProfile(@Request() req) {
     return req.user;

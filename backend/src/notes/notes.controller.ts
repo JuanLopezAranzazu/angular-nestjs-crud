@@ -5,7 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  UseGuards,
   Put,
   Delete,
   Param,
@@ -14,7 +13,6 @@ import {
 import { NotesService } from './notes.service';
 import { NoteRequestDto } from './dto/note-request.dto';
 import { NoteResponseDto } from './dto/note-response.dto';
-import { AuthGuard } from 'src/common/guards/auth/auth.guard';
 import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id/get-current-user-id.decorator';
 
 @Controller('notes')
@@ -22,7 +20,6 @@ export class NotesController {
   constructor(private notesService: NotesService) {}
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
   @Get()
   async getNotes(
     @GetCurrentUserId() userId: number,
@@ -31,7 +28,6 @@ export class NotesController {
   }
 
   @HttpCode(HttpStatus.CREATED)
-  @UseGuards(AuthGuard)
   @Post()
   async createNote(
     @GetCurrentUserId() userId: number,
@@ -41,7 +37,6 @@ export class NotesController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
   @Get(':id')
   async getNoteById(
     @GetCurrentUserId() userId: number,
@@ -51,7 +46,6 @@ export class NotesController {
   }
 
   @HttpCode(HttpStatus.OK)
-  @UseGuards(AuthGuard)
   @Put(':id')
   async updateNote(
     @GetCurrentUserId() userId: number,
@@ -62,7 +56,6 @@ export class NotesController {
   }
 
   @HttpCode(HttpStatus.NO_CONTENT)
-  @UseGuards(AuthGuard)
   @Delete(':id')
   async deleteNote(
     @GetCurrentUserId() userId: number,
