@@ -14,6 +14,12 @@ async function bootstrap() {
     }),
   );
 
+  // habilitar cors
+  app.enableCors({
+    origin: 'http://localhost:4200',
+    credentials: true,
+  });
+
   // inicio del servidor
   await app.listen(process.env.PORT ?? 3000);
 }
