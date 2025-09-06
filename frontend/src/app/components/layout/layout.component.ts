@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterOutlet, RouterModule } from '@angular/router';
+import { RouterOutlet, RouterModule, Router } from '@angular/router';
 import { Toolbar } from 'primeng/toolbar';
 import { SharedModule } from 'primeng/api';
 import { ButtonModule } from 'primeng/button';
@@ -31,12 +31,16 @@ interface NavItem {
 })
 export class LayoutComponent {
   navItems: NavItem[] = [
-    { label: 'Inicio', route: '/' },
-    { label: 'Notas', route: '/notes' },
+    { label: 'Notas', route: '/' },
     { label: 'Usuarios', route: '/admin', roles: [Role.ADMIN] },
   ];
-
   userMenuItems: MenuItem[] = [
+    {
+      label: 'Perfil del usuario',
+      icon: 'pi pi-user',
+      command: () => this.router.navigate(['/profile']),
+    },
+    { separator: true },
     {
       label: 'Cerrar sesión',
       icon: 'pi pi-sign-out',
@@ -44,7 +48,10 @@ export class LayoutComponent {
     },
   ];
 
-  constructor(private readonly tokenService: TokenService) {}
+  constructor(
+    private readonly tokenService: TokenService,
+    private router: Router
+  ) {}
 
   // filtrar menu de navegacion
   get filteredNavItems(): NavItem[] {
@@ -54,6 +61,7 @@ export class LayoutComponent {
     );
   }
 
+  // cerrar sesion
   logout() {
     this.tokenService.logout();
   }

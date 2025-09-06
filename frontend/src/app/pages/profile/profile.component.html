@@ -1,0 +1,15 @@
+<div class="p-6">
+  <div *ngIf="errorMessage" class="text-red-600 text-sm text-center">
+    {{ errorMessage }}
+  </div>
+
+  <app-loading-spinner *ngIf="loading" message="Cargando usuario..." />
+
+  <p-card *ngIf="user" header="Perfil de Usuario">
+    <ng-template pTemplate="content">
+      <p><strong>Nombre:</strong> {{ user.name }}</p>
+      <p><strong>Email:</strong> {{ user.email }}</p>
+      <p><strong>Rol:</strong> {{ user.role }}</p>
+    </ng-template>
+  </p-card>
+</div>

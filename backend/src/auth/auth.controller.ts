@@ -5,7 +5,6 @@ import {
   HttpCode,
   HttpStatus,
   Post,
-  Request,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthRequestDto } from './dto/auth-request.dto';
@@ -14,6 +13,7 @@ import { UsersService } from 'src/users/users.service';
 import { UserRequestDto } from 'src/users/dto/user-request.dto';
 import { UserResponseDto } from 'src/users/dto/user-response.dto';
 import { Public } from '../common/decorators/public/public.decorator';
+import { GetCurrentUserId } from 'src/common/decorators/get-current-user-id/get-current-user-id.decorator';
 
 @Controller('auth')
 export class AuthController {
@@ -40,7 +40,9 @@ export class AuthController {
 
   @HttpCode(HttpStatus.OK)
   @Get('profile')
-  getProfile(@Request() req) {
-    return req.user;
+  async getProfile(
+    @GetCurrentUserId() userId: number,
+  ): Promise<UserResponseDto> {
+    return this.usersService.getUserById(userId);
   }
 }

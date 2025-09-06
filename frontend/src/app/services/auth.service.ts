@@ -23,4 +23,9 @@ export class AuthService {
   register(user: UserRequestDto): Observable<UserResponseDto> {
     return this.http.post<UserResponseDto>(`${this.apiUrl}/register`, user);
   }
+
+  // obtener el perfil del usuario autenticado
+  profile(): Observable<UserResponseDto> {
+    return this.http.get<UserResponseDto>(`${this.apiUrl}/profile`);
+  }
 }
