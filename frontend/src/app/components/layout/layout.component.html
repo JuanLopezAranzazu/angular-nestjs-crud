@@ -1,0 +1,39 @@
+<div class="min-h-screen flex flex-col bg-gray-100">
+  <p-toolbar
+    [style]="{ 'border-radius': '3rem', padding: '1rem 1rem 1rem 1.5rem' }"
+  >
+    <ng-template #start>
+      <div class="flex items-center gap-2">
+        <span
+          class="text-xl font-bold text-gray-800 cursor-pointer"
+          routerLink="/"
+        >
+          Demo
+        </span>
+        <p-button label="Inicio" routerLink="/" text plain />
+        <p-button label="Notas" routerLink="/notes" text plain />
+      </div>
+    </ng-template>
+
+    <ng-template #end>
+      <div class="flex items-center gap-3">
+        <p-menu #userMenu [popup]="true" [model]="userMenuItems"></p-menu>
+        <button
+          pButton
+          type="button"
+          icon="pi pi-user"
+          class="p-button-rounded p-button-text"
+          (click)="userMenu.toggle($event)"
+        ></button>
+      </div>
+    </ng-template>
+  </p-toolbar>
+
+  <main class="flex-1 container mx-auto px-4 py-6">
+    <router-outlet></router-outlet>
+  </main>
+
+  <footer class="text-center py-4 text-sm text-gray-500">
+    © 2025 Demo - Todos los derechos reservados
+  </footer>
+</div>

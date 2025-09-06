@@ -54,13 +54,16 @@ export class RegisterComponent {
 
     // hacer peticion
     this.authService.register(this.registerForm.value).subscribe({
-      next: () => {
-        this.loading = false;
+      next: (res) => {
+        console.log(res);
         this.router.navigate(['/login']);
       },
       error: (err) => {
-        this.loading = false;
+        console.log(err);
         this.errorMessage = err.error?.message || 'Error al registrar usuario';
+      },
+      complete: () => {
+        this.loading = false;
       },
     });
   }

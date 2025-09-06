@@ -10,7 +10,8 @@ import { routes } from './app.routes';
 // interceptors
 import { errorInterceptor } from './interceptors/error.interceptor';
 import { tokenInterceptor } from './interceptors/token.interceptor';
-
+// primeng
+import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { providePrimeNG } from 'primeng/config';
 import Aura from '@primeng/themes/aura';
 
@@ -22,6 +23,7 @@ export const appConfig: ApplicationConfig = {
       withFetch(),
       withInterceptors([errorInterceptor, tokenInterceptor])
     ),
+    provideAnimationsAsync(),
     providePrimeNG({
       theme: {
         preset: Aura,

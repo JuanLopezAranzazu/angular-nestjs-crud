@@ -1,27 +1,35 @@
 import { Routes } from '@angular/router';
-
+// componentes
+import { LayoutComponent } from './components/layout/layout.component';
 // paginas
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { MissingComponent } from './pages/missing/missing.component';
 import { AdminComponent } from './pages/admin/admin.component';
+import { NotesComponent } from './pages/notes/notes.component';
 import { UnauthorizedComponent } from './pages/unauthorized/unauthorized.component';
-
 // guards
 import { authGuard } from './guards/auth.guard';
 import { rolesGuard } from './guards/roles.guard';
-
+// types
 import { Role } from './types/role.type';
 
 // rutas
 export const routes: Routes = [
-  { path: '', component: HomeComponent, canActivate: [authGuard] },
   {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [authGuard, rolesGuard],
-    data: { roles: [Role.ADMIN] },
+    path: '',
+    component: LayoutComponent,
+    children: [
+      { path: '', component: HomeComponent, canActivate: [authGuard] },
+      { path: 'notes', component: NotesComponent, canActivate: [authGuard] },
+      {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [authGuard, rolesGuard],
+        data: { roles: [Role.ADMIN] },
+      },
+    ],
   },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },

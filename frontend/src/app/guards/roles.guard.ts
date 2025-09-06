@@ -7,6 +7,7 @@ export const rolesGuard: CanActivateFn = (route, _state) => {
   const tokenService = inject(TokenService);
   const router = inject(Router);
 
+  // validar si el usuario tiene permisos
   const expectedRoles = route.data['roles'] as Role[];
   const userRole = tokenService.getUserRole();
 

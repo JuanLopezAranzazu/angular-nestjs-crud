@@ -1,0 +1,62 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="false"
+  header="{{ note ? 'Editar Nota' : 'Nueva Nota' }}"
+  [style]="{ width: '30rem' }"
+>
+  <form [formGroup]="noteForm" class="space-y-4">
+    <div>
+      <label for="title" class="block text-sm font-medium text-gray-700 mb-1">
+        Título
+      </label>
+      <input
+        pInputText
+        id="title"
+        type="text"
+        formControlName="title"
+        placeholder="Escribe el título"
+        class="w-full"
+      />
+      <small class="text-red-500" *ngIf="noteForm.get('title')?.dirty">
+        <span *ngIf="noteForm.get('title')?.errors?.['required']">
+          El título es requerido
+        </span>
+        <span *ngIf="noteForm.get('title')?.errors?.['minlength']">
+          El título debe tener al menos 2 caracteres
+        </span>
+      </small>
+    </div>
+
+    <div>
+      <label for="content" class="block text-sm font-medium text-gray-700 mb-1">
+        Contenido
+      </label>
+      <textarea
+        pInputTextarea
+        placeholder="Contenido"
+        formControlName="content"
+        class="p-inputtextarea w-full"
+        rows="5"
+      ></textarea>
+      <small class="text-red-500" *ngIf="noteForm.get('content')?.dirty">
+        <span *ngIf="noteForm.get('content')?.errors?.['required']">
+          El contenido es requerido
+        </span>
+        <span *ngIf="noteForm.get('content')?.errors?.['minlength']">
+          El contenido debe tener al menos 5 caracteres
+        </span>
+      </small>
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button label="Cancelar" severity="secondary" (onClick)="close()" />
+      <p-button
+        label="Guardar"
+        (onClick)="submit()"
+        icon="pi pi-save"
+        [loading]="loading"
+      />
+    </div>
+  </form>
+</p-dialog>

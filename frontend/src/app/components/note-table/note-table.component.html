@@ -1,0 +1,45 @@
+<div class="p-4 bg-white rounded-2xl shadow-md">
+  <p-table
+    [value]="notes"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    responsiveLayout="scroll"
+    class="rounded-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-gray-100">
+        <th class="p-3 text-left">ID</th>
+        <th class="p-3 text-left">Título</th>
+        <th class="p-3 text-left">Contenido</th>
+        <th class="p-3 text-left">Fecha</th>
+        <th class="p-3 text-center">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-note>
+      <tr class="hover:bg-gray-50 transition">
+        <td class="p-3">{{ note.id }}</td>
+        <td class="p-3 font-semibold">{{ note.title }}</td>
+        <td class="p-3 truncate max-w-xs">{{ note.content }}</td>
+        <td class="p-3">{{ note.createdAt | date : "short" }}</td>
+        <td class="p-3 text-center">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text p-button-secondary mr-2"
+            tooltip="Editar"
+            (click)="onEdit(note)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-text p-button-danger"
+            tooltip="Eliminar"
+            (click)="onDelete(note.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

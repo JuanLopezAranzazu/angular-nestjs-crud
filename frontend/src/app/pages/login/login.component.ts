@@ -56,14 +56,15 @@ export class LoginComponent {
     // hacer peticion
     this.authService.login(this.loginForm.value).subscribe({
       next: (res) => {
+        console.log(res);
         // guardar el token
         this.tokenService.login(res.accessToken);
         this.router.navigate(['/']);
       },
       error: (err) => {
+        console.error(err);
         this.errorMessage =
           err.error?.message || 'Credenciales inválidas. Intenta de nuevo.';
-        this.loading = false;
       },
       complete: () => {
         this.loading = false;
