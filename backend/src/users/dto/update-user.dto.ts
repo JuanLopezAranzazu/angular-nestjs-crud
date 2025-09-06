@@ -19,6 +19,7 @@ export class UpdateUserDto {
 
   @IsOptional()
   @IsString()
+  @MinLength(3, { message: 'El nombre debe tener al menos 3 caracteres' })
   name?: string;
 
   @IsOptional()

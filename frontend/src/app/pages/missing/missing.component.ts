@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
+import { RouterModule } from '@angular/router';
+import { ButtonModule } from 'primeng/button';
 
 @Component({
   selector: 'app-missing',
-  imports: [],
+  imports: [ButtonModule, RouterModule],
   templateUrl: './missing.component.html',
-  styleUrl: './missing.component.css'
+  styleUrl: './missing.component.css',
 })
-export class MissingComponent {
-
-}
+export class MissingComponent {}

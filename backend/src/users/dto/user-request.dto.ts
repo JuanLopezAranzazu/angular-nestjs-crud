@@ -16,6 +16,7 @@ export class UserRequestDto {
   password: string;
 
   @IsString()
+  @MinLength(3, { message: 'El nombre debe tener al menos 3 caracteres' })
   name: string;
 
   @IsOptional()

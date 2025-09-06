@@ -1,3 +1,76 @@
-<div class="card flex justify-center">
-    <p-button label="Check" />
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
+    <h2 class="text-2xl font-bold text-center mb-6 text-gray-800">
+      Iniciar Sesión
+    </h2>
+
+    <form [formGroup]="loginForm" (ngSubmit)="login()" class="space-y-5">
+      <div>
+        <label for="email" class="block text-sm font-medium text-gray-700 mb-1">
+          Correo electrónico
+        </label>
+        <input
+          pInputText
+          type="email"
+          formControlName="email"
+          placeholder="ejemplo@correo.com"
+          class="w-full"
+        />
+        <small class="text-red-500" *ngIf="loginForm.get('email')?.dirty">
+          <span *ngIf="loginForm.get('email')?.errors?.['required']">
+            El correo es requerido
+          </span>
+          <span *ngIf="loginForm.get('email')?.errors?.['email']">
+            El correo no es válido
+          </span>
+        </small>
+      </div>
+
+      <div>
+        <label
+          for="password"
+          class="block text-sm font-medium text-gray-700 mb-1"
+        >
+          Contraseña
+        </label>
+        <input
+          pInputText
+          type="password"
+          formControlName="password"
+          placeholder="********"
+          class="w-full"
+        />
+        <small
+          class="text-red-500"
+          *ngIf="loginForm.get('password')?.dirty"
+        >
+          <span *ngIf="loginForm.get('password')?.errors?.['required']">
+            La contraseña es requerida
+          </span>
+          <span *ngIf="loginForm.get('password')?.errors?.['minlength']">
+            La contraseña debe tener al menos 6 caracteres
+          </span>
+        </small>
+      </div>
+
+      <div *ngIf="errorMessage" class="text-red-600 text-sm text-center">
+        {{ errorMessage }}
+      </div>
+
+      <button
+        pButton
+        type="submit"
+        label="Iniciar sesión"
+        class="w-full"
+        [disabled]="loading"
+      ></button>
+
+      <div class="text-sm text-center mt-3">
+        ¿No tienes una cuenta?
+        <a routerLink="/register" class="text-blue-600 hover:underline">
+          Registrarse
+        </a>
+      </div>
+    </form>
+  </div>
 </div>
