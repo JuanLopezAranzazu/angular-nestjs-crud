@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet, RouterModule } from '@angular/router';
 import { Toolbar } from 'primeng/toolbar';
 import { SharedModule } from 'primeng/api';
@@ -6,6 +7,13 @@ import { ButtonModule } from 'primeng/button';
 import { MenuItem } from 'primeng/api';
 import { MenuModule } from 'primeng/menu';
 import { TokenService } from '../../services/token.service';
+import { Role } from '../../types/role.type';
+
+interface NavItem {
+  label: string;
+  route: string;
+  roles?: Role[];
+}
 
 @Component({
   selector: 'app-layout',
@@ -16,12 +24,17 @@ import { TokenService } from '../../services/token.service';
     SharedModule,
     ButtonModule,
     MenuModule,
+    CommonModule,
   ],
   templateUrl: './layout.component.html',
   styleUrl: './layout.component.css',
 })
 export class LayoutComponent {
-  constructor(private readonly tokenService: TokenService) {}
+  navItems: NavItem[] = [
+    { label: 'Inicio', route: '/' },
+    { label: 'Notas', route: '/notes' },
+    { label: 'Usuarios', route: '/admin', roles: [Role.ADMIN] },
+  ];
 
   userMenuItems: MenuItem[] = [
     {
@@ -30,6 +43,16 @@ export class LayoutComponent {
       command: () => this.logout(),
     },
   ];
+
+  constructor(private readonly tokenService: TokenService) {}
+
+  // filtrar menu de navegacion
+  get filteredNavItems(): NavItem[] {
+    const role = this.tokenService.getUserRole();
+    return this.navItems.filter(
+      (item) => !item.roles || (role && item.roles.includes(role))
+    );
+  }
 
   logout() {
     this.tokenService.logout();

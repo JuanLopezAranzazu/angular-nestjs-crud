@@ -33,6 +33,7 @@ export class NotesComponent implements OnInit {
     this.getNotes();
   }
 
+  // obtener las notas del usuario
   getNotes(): void {
     this.loading = true;
     this.errorMessage = '';
@@ -45,6 +46,7 @@ export class NotesComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = err.error?.message || 'Error al cargar las notas';
+        this.loading = false;
       },
       complete: () => {
         this.loading = false;
@@ -52,6 +54,7 @@ export class NotesComponent implements OnInit {
     });
   }
 
+  // guardar una nota
   onSave(note: NoteRequestDto) {
     this.loadingForm = true;
     this.errorMessage = '';
@@ -69,6 +72,7 @@ export class NotesComponent implements OnInit {
       error: (err) => {
         console.error(err);
         this.errorMessage = err.error?.message || 'Error al guardar la nota';
+        this.loadingForm = false;
       },
       complete: () => {
         this.loadingForm = false;
@@ -76,6 +80,7 @@ export class NotesComponent implements OnInit {
     });
   }
 
+  // eliminar una nota
   onDelete(id: number) {
     this.errorMessage = '';
 
@@ -90,11 +95,13 @@ export class NotesComponent implements OnInit {
     });
   }
 
+  // crear una nota
   onCreate() {
     this.selectedNote = null;
     this.showModal = true;
   }
 
+  // editar una nota
   onEdit(note: NoteResponseDto) {
     this.selectedNote = note;
     this.showModal = true;

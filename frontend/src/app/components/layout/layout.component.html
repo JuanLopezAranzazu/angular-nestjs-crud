@@ -10,8 +10,13 @@
         >
           Demo
         </span>
-        <p-button label="Inicio" routerLink="/" text plain />
-        <p-button label="Notas" routerLink="/notes" text plain />
+        <p-button
+          *ngFor="let item of filteredNavItems"
+          [label]="item.label"
+          [routerLink]="item.route"
+          text
+          plain
+        />
       </div>
     </ng-template>
 

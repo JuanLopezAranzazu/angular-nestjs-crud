@@ -1,0 +1,104 @@
+<p-dialog
+  [(visible)]="visible"
+  [modal]="true"
+  [closable]="false"
+  header="{{ user ? 'Editar Usuario' : 'Nueva Usuario' }}"
+  [style]="{ width: '30rem' }"
+>
+  <form [formGroup]="userForm" class="space-y-4">
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        Nombre
+      </label>
+      <input
+        pInputText
+        type="text"
+        formControlName="name"
+        placeholder="Tu nombre"
+        class="w-full"
+      />
+      <small class="text-red-500" *ngIf="userForm.get('name')?.dirty">
+        <span *ngIf="userForm.get('name')?.errors?.['required']">
+          El nombre es requerido
+        </span>
+        <span *ngIf="userForm.get('name')?.errors?.['minlength']">
+          El nombre debe tener al menos 3 caracteres
+        </span>
+      </small>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        Correo electrónico
+      </label>
+      <input
+        pInputText
+        type="email"
+        formControlName="email"
+        placeholder="correo@ejemplo.com"
+        class="w-full"
+      />
+      <small class="text-red-500" *ngIf="userForm.get('email')?.dirty">
+        <span *ngIf="userForm.get('email')?.errors?.['required']">
+          El correo es requerido
+        </span>
+        <span *ngIf="userForm.get('email')?.errors?.['email']">
+          El correo no es válido
+        </span>
+      </small>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1"> Rol </label>
+      <p-dropdown
+        formControlName="role"
+        [options]="roles"
+        optionLabel="label"
+        optionValue="value"
+        placeholder="Seleccione un rol"
+        class="w-full"
+      ></p-dropdown>
+
+      <small class="text-red-500" *ngIf="userForm.get('role')?.dirty">
+        <span *ngIf="userForm.get('role')?.errors?.['required']">
+          El rol es requerido
+        </span>
+      </small>
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700 mb-1">
+        Contraseña
+      </label>
+      <input
+        pInputText
+        type="password"
+        formControlName="password"
+        placeholder="********"
+        class="w-full"
+      />
+      <small class="text-red-500" *ngIf="userForm.get('password')?.dirty">
+        <span *ngIf="userForm.get('password')?.errors?.['required']">
+          La contraseña es requerida
+        </span>
+        <span *ngIf="userForm.get('password')?.errors?.['minlength']">
+          La contraseña debe tener al menos 6 caracteres
+        </span>
+      </small>
+    </div>
+
+    <div *ngIf="errorMessage" class="text-red-600 text-sm text-center">
+      {{ errorMessage }}
+    </div>
+
+    <div class="flex justify-end gap-2 mt-4">
+      <p-button label="Cancelar" severity="secondary" (onClick)="close()" />
+      <p-button
+        label="Guardar"
+        (onClick)="submit()"
+        icon="pi pi-save"
+        [loading]="loading"
+      />
+    </div>
+  </form>
+</p-dialog>

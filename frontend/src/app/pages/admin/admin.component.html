@@ -1,1 +1,31 @@
-<p>admin works!</p>
+<div class="p-6">
+  <div *ngIf="errorMessage" class="text-red-600 text-sm text-center">
+    {{ errorMessage }}
+  </div>
+
+  <div class="flex justify-between mb-4">
+    <h1 class="text-2xl font-bold mb-4">Usuarios</h1>
+    <p-button
+      label="Crear Usuario"
+      (onClick)="onCreate()"
+      icon="pi pi-plus"
+    ></p-button>
+  </div>
+
+  <app-loading-spinner *ngIf="loading" message="Cargando usuarios..." />
+
+  <app-user-table
+    *ngIf="!loading"
+    [users]="users"
+    (edit)="onEdit($event)"
+    (delete)="onDelete($event)"
+  />
+
+  <app-user-form
+    [visible]="showModal"
+    [user]="selectedUser"
+    [loading]="loadingForm"
+    (save)="onSave($event)"
+    (cancel)="showModal = false"
+  />
+</div>

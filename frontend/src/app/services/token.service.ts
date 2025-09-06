@@ -28,13 +28,10 @@ export class TokenService {
     return localStorage.getItem(this.TOKEN_KEY);
   }
 
-  // verificar si el token el valido
+  // verificar si hay token
   isAuthenticated(): boolean {
-    const token = this.getToken();
-    if (!token) return false;
-
-    const decoded: JwtPayload = jwtDecode(token);
-    return Date.now() < decoded.exp * 1000;
+    const token = localStorage.getItem('auth');
+    return !!token;
   }
 
   // obtener el rol del usuario

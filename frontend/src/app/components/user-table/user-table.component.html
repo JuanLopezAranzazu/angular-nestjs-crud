@@ -1,0 +1,47 @@
+<div class="p-4 bg-white rounded-2xl shadow-md">
+  <p-table
+    [value]="users"
+    [paginator]="true"
+    [rows]="5"
+    [rowsPerPageOptions]="[5, 10, 20]"
+    responsiveLayout="scroll"
+    class="rounded-lg"
+  >
+    <ng-template pTemplate="header">
+      <tr class="bg-gray-100">
+        <th class="p-3 text-left">ID</th>
+        <th class="p-3 text-left">Nombre</th>
+        <th class="p-3 text-left">Correo</th>
+        <th class="p-3 text-left">Rol</th>
+        <th class="p-3 text-left">Fecha</th>
+        <th class="p-3 text-center">Acciones</th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-user>
+      <tr class="hover:bg-gray-50 transition">
+        <td class="p-3">{{ user.id }}</td>
+        <td class="p-3 font-semibold">{{ user.name }}</td>
+        <td class="p-3 truncate max-w-xs">{{ user.email }}</td>
+        <td class="p-3">{{ user.role }}</td>
+        <td class="p-3">{{ user.createdAt | date : "short" }}</td>
+        <td class="p-3 text-center">
+          <button
+            pButton
+            icon="pi pi-pencil"
+            class="p-button-rounded p-button-text p-button-secondary mr-2"
+            tooltip="Editar"
+            (click)="onEdit(user)"
+          ></button>
+          <button
+            pButton
+            icon="pi pi-trash"
+            class="p-button-rounded p-button-text p-button-danger"
+            tooltip="Eliminar"
+            (click)="onDelete(user.id)"
+          ></button>
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>

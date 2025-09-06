@@ -28,11 +28,12 @@ import { NoteResponseDto } from '../../types/note.type';
 export class NoteFormComponent {
   @Input() visible = false;
   @Input() note: NoteResponseDto | null = null;
-  @Input() loading: boolean = false; 
+  @Input() loading: boolean = false;
   @Output() save = new EventEmitter<any>();
   @Output() cancel = new EventEmitter<void>();
 
   noteForm!: FormGroup;
+  errorMessage = '';
 
   constructor(private readonly fb: FormBuilder) {}
 
@@ -50,11 +51,12 @@ export class NoteFormComponent {
   }
 
   submit() {
-    if (this.noteForm.valid) {
-      this.save.emit(this.noteForm.value);
-    } else {
-      this.noteForm.markAllAsTouched();
+    if (!this.noteForm.valid) {
+      this.errorMessage = 'Por favor completa todos los campos.';
+      return;
     }
+
+    this.save.emit(this.noteForm.value);
   }
 
   close() {

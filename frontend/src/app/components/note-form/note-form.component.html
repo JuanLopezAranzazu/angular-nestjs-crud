@@ -49,6 +49,10 @@
       </small>
     </div>
 
+    <div *ngIf="errorMessage" class="text-red-600 text-sm text-center">
+      {{ errorMessage }}
+    </div>
+
     <div class="flex justify-end gap-2 mt-4">
       <p-button label="Cancelar" severity="secondary" (onClick)="close()" />
       <p-button

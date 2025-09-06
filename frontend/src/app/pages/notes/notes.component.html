@@ -2,7 +2,7 @@
   <div *ngIf="errorMessage" class="text-red-600 text-sm text-center">
     {{ errorMessage }}
   </div>
-  
+
   <div class="flex justify-between mb-4">
     <h1 class="text-2xl font-bold mb-4">Notas</h1>
     <p-button
@@ -15,7 +15,7 @@
   <app-loading-spinner *ngIf="loading" message="Cargando notas..." />
 
   <app-note-table
-    *ngIf="!loading && !errorMessage"
+    *ngIf="!loading"
     [notes]="notes"
     (edit)="onEdit($event)"
     (delete)="onDelete($event)"
@@ -27,6 +27,5 @@
     [loading]="loadingForm"
     (save)="onSave($event)"
     (cancel)="showModal = false"
-  >
-  </app-note-form>
+  />
 </div>
